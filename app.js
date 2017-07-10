@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
 app.use( session({
-  secret: 'Getting Ish done',
+  secret: 'Get Ish done',
 
   // these two options are there to prevent warnings in terminal
   resave: true,

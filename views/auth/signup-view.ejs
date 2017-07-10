@@ -1,49 +1,47 @@
-<br>
-<h2> Sign Up </h2>
-
-<% if (typeof errorMessage !== "undefined") { %>
-  <div class="error">
-    <%= errorMessage %>
-  </div>
-  <% } %>
-  <br>
-
-    <form method="post" action="/signup">
-      <div class="input-group input-group-sm">
-      <label for="name-input"> Your Name </label>
-      <input class="form-control" id="name-input" type="text" name="signupName" placeholder="e.g., Diana Prince">
+<center>
+  <% if (typeof errorMessage !== "undefined") { %>
+    <div class="error">
+      <%= errorMessage %>
     </div>
+    <% } %>
       <br>
+      <div class="block blur">
+        <div class="container">
+          <div class="row">
+            <div class="span12">
+              <div class="clear-form no-border">
 
-      <div class="input-group input-group-sm">
-      <label for="username-input"> User Name </label>
-      <input class="form-control" id="username-input" type="text" name="signupUsername" placeholder=" User Name">
-    </div>
-      <br>
+                <form method="post" action="/signup">
+                  <div class="form-heading">
+                    <h3 class="header">Create an account</h3>
+                    <hr/>
+                  </div>
 
-      <div class="input-group input-group-sm">
-      <label for="password-input"> Password </label>
-      <input class="form-control" id="password-input" type="password" name="signupPassword"placeholder="******">
-    </div>
+                  <div class="form-body">
+                    <span class="form-label">Name</span>
+                    <br>
+                    <input class="form-control" id="name-input" type="text" name="signupName" placeholder="e.g., Diana Prince">
+                    <span class="form-label">User Name</span>
+                    <input class="form-control" id="username-input" type="text" name="signupUsername" placeholder=" User Name">
+                    <span class="form-label">Enter password</span>
+                    <input class="form-control" id="password-input" type="password" name="signupPassword" placeholder="PASSWORD">
+                  </div>
 
-      <br>
-      <button> Sign Up </button>
-    </form>
+                  <div class="form-footer">
+                    <button class="btn btn-large btn-green btn-block" type="submit">Create an account</button>
+                    <p>Or you can use Social Sites</p>
+                    <a href="/auth/facebook" class="btn btn-large btn-block btn-fb">Create User with Facebook</a>
+                    <a href="/auth/google" class="btn btn-large btn-block btn-google">Create User  with Google</a>
 
-    <br>
-    <a href="/auth/facebook">
-      Log in w/FB
-    </a>
-    <br>
+                    <p class="center"> Do you already have an account?
+                      <a href="/login"> Log In </a>
+                      <i class="icon-arrow-right"></i></p>
+                  </div>
 
-    <br>
-    <a href="/auth/google">
-      Log in w/Google
-    </a>
-    <br>
-
-<br>
-    <p>
-      Do you already have an account?
-      <a href="/login"> Log In </a>
-    </p>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>

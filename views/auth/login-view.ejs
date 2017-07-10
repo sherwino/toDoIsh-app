@@ -1,41 +1,52 @@
-<div class="logIn">
-<h2> Log In </h2>
-
 <% if (errorMessage.length > 0) { %>
   <div class="error">
     <%= errorMessage %>
   </div>
-<% } %>
+  <% } %>
 
-<form method="post" action="/login">
-  <br>
-  <div class="input-group input-group-sm">
-  <label for="username-input"> User Name </label>
-  <input class="form-control" id="username-input" type="text" name="loginUsername" placeholder=" User Name">
-</div>
-  <br>
+    <div class="block blur2">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <div class="clear-form two-col">
+              <div class="form-heading">
+                <center>
+                  <h3 class="header">Sign In</h3>
+                  <hr/>
+              </div>
+              <div class="col1">
+                <h4>Use other accounts</h4>
+                <p>
+                  You can also sign in using your Facebook Account or Google Account
+                </p>
+                <a href="/auth/facebook" class="btn btn-large btn-block btn-fb">Login with Facebook</a>
+                <a href="/auth/google" class="btn btn-large btn-block btn-google">Login with Google</a> </div>
 
-  <div class="input-group input-group-sm">
-  <label for="password-input"> Password </label>
-  <input class="form-control" id="password-input" type="password" name="loginPassword" placeholder="******">
-  </div
-  <br>
+              <form method="post" action="/login">
+                <div class="col2">
+                  <div class="form-heading">
+                    <h4 class="header">Using your account</h4>
+                  </div>
 
-  <br>
-  <button> Log In </button>
-</form>
+                  <div class="form-body">
+                    <div class="pair-group">
+                      <input class="input-block-level" id="username-input" type="text" name="loginUsername" placeholder=" User Name">
+                      <input class="input-block-level" id="password-input" type="password" name="loginPassword" placeholder="PASSWORD">
+                    </div>
+                  </div>
 
-<a href="/auth/facebook">
-  Log In with Facebook</a>
+                  <div class="form-footer">
+                    <button class="btn btn-large btn-blue btn-block" type="submit">Sign In</button>
 
-
-<br>
-<a href="/auth/google">Log In with Google</a>
-<br>
-
-<p>
-  Don't have an account?
-  <a href="/signup"> Sign Up </a>
-</p>
-<br>
-</div>
+                    <p class="center">Not yet a member?
+                      <a href="/signup"> Sign Up </a>
+                      <i class="icon-arrow-right"></i></p>
+              </form>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>>
+    </div>

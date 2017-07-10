@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
  
  // define model =================
     const ToDo = Schema({
-        text : String
+        text : { type: String }
     });
 
 const Todoo = mongoose.model('todo', ToDo );

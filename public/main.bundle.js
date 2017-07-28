@@ -307,7 +307,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/lists-page/lists-page.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2> My Lists </h2>\n\n<div>\n  <ul class=\"list-of-lists\">\n    <li class=\"list-container\" *ngFor=\"let oneList of myLists; let i = index\">\n      <h3> {{ oneList.title }} </h3>\n\n      <ul>\n        <li class=\"card\" *ngFor=\"let oneCard of oneList.cards\">\n          <p> {{ oneCard.title }} </p>\n          <div class=\"btn btn-normal\" (click)=\"update(oneCard)\">Edit</div>\n          <div class=\"btn btn-danger\" (click)=\"delete(oneCard)\">Del</div>\n        </li>\n\n        <li>\n          <form (ngSubmit)=\"makeACard(oneList, i)\">\n            <input class=\"card\" type=\"text\" placeholder=\"Add a card...\"\n                [(ngModel)]=\"newCardTitles[i]\" name=\"newListTitle[]\">\n            <br>\n            <button> Save </button>\n          </form>\n        </li>\n      </ul>\n    </li>\n  </ul>\n\n  <form (ngSubmit)=\"makeAList()\">\n    <input type=\"text\" placeholder=\"Add a list...\"\n        [(ngModel)]=\"newListTitle\" name=\"newListTitle\">\n    <br>\n    <button> Save </button>\n  </form>\n</div>\n"
+module.exports = "<h2> My Lists </h2>\n\n<div>\n  <ul class=\"list-of-lists\">\n    <li class=\"list-container\" *ngFor=\"let oneList of myLists; let i = index\">\n      <h3> {{ oneList.title }} </h3>\n\n      <ul>\n        <li class=\"card\" *ngFor=\"let oneCard of oneList.cards\">\n          <p> {{ oneCard.title }} </p>\n          <div class=\"btn btn-normal\" (click)=\"update(oneCard)\">Edit</div>\n          <div class=\"btn btn-danger\" (click)=\"delete(oneList, oneCard)\">Del</div>\n        </li>\n\n        <li>\n          <form (ngSubmit)=\"makeACard(oneList, i)\">\n            <input class=\"card\" type=\"text\" placeholder=\"Add a card...\"\n                [(ngModel)]=\"newCardTitles[i]\" name=\"newListTitle[]\">\n            <br>\n            <button> Save </button>\n          </form>\n        </li>\n      </ul>\n    </li>\n  </ul>\n\n  <form (ngSubmit)=\"makeAList()\">\n    <input type=\"text\" placeholder=\"Add a list...\"\n        [(ngModel)]=\"newListTitle\" name=\"newListTitle\">\n    <br>\n    <button> Save </button>\n  </form>\n</div>\n"
 
 /***/ }),
 
@@ -371,14 +371,14 @@ var ListsPageComponent = (function () {
             alert('Card create error 🐋');
         });
     };
-    ListsPageComponent.prototype.delete = function (card) {
+    ListsPageComponent.prototype.delete = function (list, card) {
         var _this = this;
-        this.cardThang.remove(card._id)
+        this.cardThang.remove(list._id, card._id)
             .then(function () { })
             .catch(function (err) {
             _this.errorMessage = 'Could not retrieve item details. Try again later.';
         });
-        console.log(card.name + ' was deleted');
+        console.log(card.title + ' delete request sent');
     };
     return ListsPageComponent;
 }());
@@ -484,7 +484,9 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/add/operator/toPromise.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CardService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -499,10 +501,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var CardService = (function () {
     function CardService(httpThang) {
         this.httpThang = httpThang;
-        this.baseUrl = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].apiUrl;
+        this.baseUrl = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */].apiUrl;
     }
     CardService.prototype.createCard = function (listId, title) {
         return this.httpThang
@@ -510,10 +513,10 @@ var CardService = (function () {
             .toPromise()
             .then(function (res) { return res.json(); });
     };
-    CardService.prototype.remove = function (id) {
-        return this.httpThang.post(this.baseUrl + "/api/cards/del/" + id, { withCredentials: true })
+    CardService.prototype.remove = function (listId, cardId) {
+        return this.httpThang.post(this.baseUrl + "/api/lists/" + listId + "/cards/del", { cardId: cardId }, { withCredentials: true })
             .toPromise()
-            .then(function (apiResponse) { return apiResponse.json(); });
+            .then(function (res) { return res.json(); });
     };
     return CardService;
 }());

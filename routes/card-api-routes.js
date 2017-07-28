@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express          = require('express');
+const mongoose         = require('mongoose');
 const app              = express();
 const path             = require('path');
 const fs               = require('fs');
@@ -11,8 +11,10 @@ const fs               = require('fs');
 const ensureLoggedInApiVersion = require('../lib/ensure-logged-in-api-version');
 const ListModel = require('../models/list-model');
 const CardModel = require('../models/card-model');
+const cardRoutes       = express.Router();
 
-router.post('/api/lists/:id/cards', ensureLoggedInApiVersion, (req, res, next) => {
+cardRoutes.post('/api/lists/:id/cards', ensureLoggedInApiVersion, (req, res, next) => {
+    console.log(`the list we are posting to: ${req.params.id}`);
     CardModel
         .findOne({ list: req.params.id })
         .sort({ position: -1 })
@@ -57,7 +59,7 @@ router.post('/api/lists/:id/cards', ensureLoggedInApiVersion, (req, res, next) =
 
 }); //close the post route '/api/lists'
 
-router.patch('./api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
+cardRoutes.patch('./api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
     CardModel.findByIdAndUpdate(
         req.params.id,
         (err, cardFromDB) => {
@@ -92,30 +94,34 @@ router.patch('./api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
 }); //close patch '/api/cards/:id'
 
 // ensureLoggedInApiVersion,
-router.delete('/api/cards/del/:id',  (req, res, next) => {
-    const cardId = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(cardId)) {
-      res.status(400).json({ message: "The ID you send the backend was invalid"});
+cardRoutes.post('/api/lists/:id/cards/del',  (req, res, next) => {
+  console.log(`Received a delete request!!!`);
+    const listId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(listId)) {
+      res.status(400).json({ message: "The ID you sent the backend was invalid"});
       return;
     }
-    console.log(`This is the card the you are trying ot delete ${cardId}`);
-    CardModel.remove({ _id: cardId}, (err) => {
+    // CardModel.findOne({ list: listId })
+
+    const theCardId = req.body.cardId;
+    CardModel.remove({ _id: theCardId}, (err, cardFromDB) => {
+      console.log(cardFromDB);
             if (err) {
                 res.status(500).json({ message: 'card remove did not work' });
                 return;
             }
 
             ListModel.findByIdAndUpdate(
-                cardFromDB.list,
-                { $pull: { cards: cardsFromDB._id } },
+                listId,
+                { $pull: { cards: theCardId } },
                 (err) => {
                     if (err) {
                         res.status(500).json({ message: 'list update went to SHhhhhhh ' });
                         return;
                     }
 
-                    res.json({ message: 'We were able to remove card'});
                     res.status(200).json(cardFromDB);
+                    // res.json({ message: 'We were able to remove card'});
 
                 }
             );
@@ -123,4 +129,4 @@ router.delete('/api/cards/del/:id',  (req, res, next) => {
     );
 }); // close delete '/api/cards/:id
 
-module.exports = router;
+module.exports = cardRoutes;

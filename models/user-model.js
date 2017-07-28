@@ -1,29 +1,27 @@
 const mongoose = require('mongoose');
 
+
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
-  // 1st arg -> fields of the documents of this collection
+
+const myUserSchema = new Schema(
   {
-    // All users
-    name: { type: String },
-
-    // Traditional registration users
-    username: { type: String },
-    encryptedPassword: { type: String },
-
-    // Login with Facebook users
-    facebookID: { type: String },
-
-    // Login with Google users
-    googleID: { type: String }
+    fullName: { type: String },
+    email: {
+      type: String,
+      required: true
+    },
+    encryptedPassword: {
+      type: String,
+      required: true
+    },
   },
-
   {
     timestamps: true
   }
 );
 
-const User = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', myUserSchema);
 
-module.exports = User;
+
+module.exports = UserModel;

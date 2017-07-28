@@ -1,6 +1,12 @@
 const express = require('express');
-
 const router = express.Router();
+const app              = express();
+const path             = require('path');
+const fs               = require('fs');
+                         require('dotenv').config();
+// in order to create the routes for the products you need to load the model
+
+
 
 const ensureLoggedInApiVersion = require('../lib/ensure-logged-in-api-version');
 const ListModel = require('../models/list-model');
@@ -85,11 +91,15 @@ router.patch('./api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
     ); //close findById
 }); //close patch '/api/cards/:id'
 
-
-router.delete('/api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
-    CardModel.findByIdAndRemove(
-        req.params.id,
-        (err, cardFromDB) => {
+// ensureLoggedInApiVersion,
+router.delete('/api/cards/del/:id',  (req, res, next) => {
+    const cardId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(cardId)) {
+      res.status(400).json({ message: "The ID you send the backend was invalid"});
+      return;
+    }
+    console.log(`This is the card the you are trying ot delete ${cardId}`);
+    CardModel.remove({ _id: cardId}, (err) => {
             if (err) {
                 res.status(500).json({ message: 'card remove did not work' });
                 return;
@@ -104,6 +114,7 @@ router.delete('/api/cards/:id', ensureLoggedInApiVersion, (req, res, next) => {
                         return;
                     }
 
+                    res.json({ message: 'We were able to remove card'});
                     res.status(200).json(cardFromDB);
 
                 }

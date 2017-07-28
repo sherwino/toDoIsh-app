@@ -17,7 +17,7 @@ require('dotenv').config();
 require('./config/passport-config');
 
 // Had to do this I was getting a mongoose Err
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 console.log('Successfully connected to MongoDB!');
 

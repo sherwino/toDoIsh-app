@@ -119,7 +119,7 @@ cardRoutes.post('/api/lists/:id/cards/del',  (req, res, next) => {
                         res.status(500).json({ message: 'list update went to SHhhhhhh ' });
                         return;
                     }
-
+                    console.log("Fuck this shit");
                     res.status(200).json(cardFromDB);
                     // res.json({ message: 'We were able to remove card'});
 
